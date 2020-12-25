@@ -3,6 +3,7 @@ import javax.mail.Session;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -19,7 +20,8 @@ public class PostReq {
         int res = getReq(id);
         if (res == 200) {
            //sendMail();
-            sendMailSSL();
+            //sendMailSSL();
+            sendTeleg();
         }
     }
 
@@ -113,45 +115,58 @@ public class PostReq {
 //            e.printStackTrace();
 //        }
 //    }
-    public static void sendMailSSL(){
-
-        final String username = "aleksch1989@gmail.com";
-        final String password = "z63r5wi7qt";
-
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "465");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.socketFactory.port", "465");
-        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
-
-        Session session = Session.getInstance(prop,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
-                    }
-                });
-
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("aleksch1989@gmail.com"));
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse("achibisov@russoutdoor.ru")
-            );
-            message.setSubject("Testing Gmail SSL");
-            message.setText("Dear Mail Crawler,"
-                    + "\n\n Please do not spam my email!");
-
-            Transport.send(message);
-
-            System.out.println("Done");
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
+//    public static void sendMailSSL(){
+//
+//        final String username = "aleksch1989@gmail.com";
+//        final String password = "z63r5wi7qt";
+//
+//        Properties prop = new Properties();
+//        prop.put("mail.smtp.host", "smtp.gmail.com");
+//        prop.put("mail.smtp.port", "465");
+//        prop.put("mail.smtp.auth", "true");
+//        prop.put("mail.smtp.socketFactory.port", "465");
+//        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//
+//
+//        Session session = Session.getInstance(prop,
+//                new javax.mail.Authenticator() {
+//                    protected PasswordAuthentication getPasswordAuthentication() {
+//                        return new PasswordAuthentication(username, password);
+//                    }
+//                });
+//
+//        try {
+//
+//            Message message = new MimeMessage(session);
+//            message.setFrom(new InternetAddress("aleksch1989@gmail.com"));
+//            message.setRecipients(
+//                    Message.RecipientType.TO,
+//                    InternetAddress.parse("achibisov@russoutdoor.ru")
+//            );
+//            message.setSubject("Testing Gmail SSL");
+//            message.setText("Dear Mail Crawler,"
+//                    + "\n\n Please do not spam my email!");
+//
+//            Transport.send(message);
+//
+//            System.out.println("Done");
+//
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public static void sendTeleg() throws IOException {
+        String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";String apiToken = "1438985088:AAHj7q5-F86a-mZMh6Ckp1KtD1oABI5rtis";
+        String chatId = "-260956938";
+        String text = "it's didn't work";urlString = String.format(urlString, apiToken, chatId, text);URL url = new URL(urlString);
+        URLConnection conn = url.openConnection();StringBuilder sb = new StringBuilder();
+        InputStream is = new BufferedInputStream(conn.getInputStream());
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String inputLine = "";
+        while ((inputLine = br.readLine()) != null) {
+            sb.append(inputLine);
         }
+        String response = sb.toString();
     }
 }
 
