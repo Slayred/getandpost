@@ -5,6 +5,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -15,14 +17,34 @@ public class PostReq {
     private static final int CONNECTION_TIMEOUT = 5000;
 
     public static void main(final String[] args) throws Exception {
-        String id = post();
-        //System.out.println(id);
-        int res = getReq(id);
-        if (res == 200) {
-           //sendMail();
-            //sendMailSSL();
-            sendTeleg();
-        }
+        Timer timer = new Timer();
+        TimerTask task =  new TimerTask() {
+            @Override
+            public void run() {
+                String id = null;
+                try {
+                    id = post();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int res = 0;
+                try {
+                    res = getReq(id);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (res == 200) {
+                    try {
+                        sendTeleg();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, (1000*60*5));
+
+
     }
 
     public static String post() throws IOException {
@@ -37,7 +59,7 @@ public class PostReq {
             byte[] inp = jIS.getBytes();
             os.write(inp, 0, inp.length);
         }
-        System.out.println(con.getResponseCode());
+        //System.out.println(con.getResponseCode());
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(con.getInputStream(), "utf-8"))) {
             StringBuilder resp = new StringBuilder();
