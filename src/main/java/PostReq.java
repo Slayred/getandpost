@@ -14,9 +14,9 @@ import javax.mail.internet.MimeMessage;
 
 
 public class PostReq {
-    private static final int CONNECTION_TIMEOUT = 5000;
+    //private static final int CONNECTION_TIMEOUT = 5000;
 
-    public static void main(final String[] args) throws Exception {
+    public static void main (String[] args) throws Exception {
         Timer timer = new Timer();
         TimerTask task =  new TimerTask() {
             @Override
@@ -35,7 +35,7 @@ public class PostReq {
                 }
                 if (res == 200) {
                     try {
-                        sendTeleg();
+                        sendTeleg(res);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -177,10 +177,11 @@ public class PostReq {
 //            e.printStackTrace();
 //        }
 //    }
-    public static void sendTeleg() throws IOException {
+    public static void sendTeleg(int res) throws IOException {
         String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";String apiToken = "1438985088:AAHj7q5-F86a-mZMh6Ckp1KtD1oABI5rtis";
         String chatId = "-260956938";
-        String text = "it's didn't work";urlString = String.format(urlString, apiToken, chatId, text);URL url = new URL(urlString);
+        String text = "it's didn't work! Code:" + res;
+        urlString = String.format(urlString, apiToken, chatId, text);URL url = new URL(urlString);
         URLConnection conn = url.openConnection();StringBuilder sb = new StringBuilder();
         InputStream is = new BufferedInputStream(conn.getInputStream());
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
