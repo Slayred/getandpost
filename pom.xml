@@ -26,6 +26,13 @@
             <artifactId>mail</artifactId>
             <version>1.4</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.akathist.maven.plugins.launch4j/launch4j-maven-plugin -->
+        <dependency>
+            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+            <artifactId>launch4j-maven-plugin</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -43,7 +50,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ui.App</mainClass>
+                            <mainClass>PostReq</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

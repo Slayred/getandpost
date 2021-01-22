@@ -33,7 +33,7 @@ public class PostReq {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (res == 200) {
+                if (res != 200) {
                     try {
                         sendTeleg(res);
                     } catch (IOException e) {
@@ -42,7 +42,7 @@ public class PostReq {
                 }
             }
         };
-        timer.scheduleAtFixedRate(task, 0, (1000*60*5));
+        timer.scheduleAtFixedRate(task, 0, (1000*60*20));
 
 
     }
